@@ -17,10 +17,10 @@ while True:
     print("Fetching dates...")
     status_code, dates_for_wniosek = asyncio.run(
         available_dates('https://kolejka.gdansk.uw.gov.pl/admin/API/date/8/198/pl'))
-    if dates_for_wniosek:
+    if dates_for_wniosek and status_code == 200:
         print(dates_for_wniosek)
     else:
-        clear_console_no_dates()
+        clear_console_no_dates(status_code)
     logging.basicConfig(
         filename="slupsk.log",
         filemode='a',
