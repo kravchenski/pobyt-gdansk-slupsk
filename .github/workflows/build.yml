@@ -26,37 +26,36 @@ jobs:
 
       - name: Build Executables
         run: |
-          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk_v1.0.1" --add-data "utils:utils/" "gdansk.py"
-          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1" --add-data "utils:utils/" "slupsk.py"
+          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk" --add-data "utils:utils/" "gdansk.py"
+          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk" --add-data "utils:utils/" "slupsk.py"
+
+      - name: Show built files (debug)
+        run: ls -R dist
 
       - name: Upload executables as artifacts
         uses: actions/upload-artifact@v4
         with:
           name: executables
-          path: |
-            dist/gdansk
-            dist/slupsk
+          path: dist/*
 
   release:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download built executables
         uses: actions/download-artifact@v4
         with:
           name: executables
           path: dist
 
+      - name: Show downloaded files (debug)
+        run: ls -R dist
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            dist/gdansk
-            dist/slupsk
+          files: dist/*
           tag_name: ${{ github.ref_name }}
           name: "Release ${{ github.ref_name }}"
           body: "Executable files for Gdańsk and Słupsk are included in this release."
