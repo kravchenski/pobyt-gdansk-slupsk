@@ -29,10 +29,33 @@ jobs:
           pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk_v1.0.1" --add-data "utils:utils/" "gdansk.py"
           pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1" --add-data "utils:utils/" "slupsk.py"
 
-      - name: Upload Artifacts for Release
-        uses: actions/upload-artifact@v4
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: executables
-          path: |
-            dist/gdansk_v1.0.1
-            dist/slupsk_v1.0.1
+          tag_name: v1.0.1
+          release_name: "Release v1.0.1"
+          body: "Executable files for Gdańsk and Słupsk are collected and uploaded."
+          draft: false
+          prerelease: false
+
+      - name: Upload Gdańsk Executable to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/gdansk_v1.0.1
+          asset_name: gdansk_v1.0.1.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Słupsk Executable to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/slupsk_v1.0.1
+          asset_name: slupsk_v1.0.1.exe
+          asset_content_type: application/octet-stream
