@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -26,11 +26,11 @@ jobs:
 
       - name: Build Executables
         run: |
-          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk_v1.0.1.exe" --add-data "utils:utils/" "gdansk.py"
-          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1.exe" --add-data "utils:utils/" "slupsk.py"
+          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk_v1.0.1.exe" --add-data "utils;utils/" "gdansk.py"
+          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1.exe" --add-data "utils;utils/" "slupsk.py"
 
       - name: Show built files (debug)
-        run: ls -R dist
+        run: dir dist
 
       - name: Upload executables as artifacts
         uses: actions/upload-artifact@v4
@@ -40,7 +40,7 @@ jobs:
 
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Download built executables
@@ -50,7 +50,7 @@ jobs:
           path: dist
 
       - name: Show downloaded files (debug)
-        run: ls -R dist
+        run: dir dist
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
