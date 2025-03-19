@@ -1,0 +1,7 @@
+type_of_registration_phrase = "Enter letter for your registration:\n(B) Wniosek legalizujący pobyt lub złożenie odcisków palców\n(C) Zezwolenia na pracę i zaproszenia\n"
+dates_phrase = "Available Dates: {}"
+enter_date_phrase = "Write down a specific date that's convenient for you (day.month.year): "
+available_time_phrase = "Available time(s) for this day: {}"
+enter_time_phrase = "Enter available time for this day: "
+enter_full_name_phrase = "Enter your full name: "
+enter_email_phrase = "Enter your email: "
