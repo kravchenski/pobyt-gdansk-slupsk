@@ -3,7 +3,7 @@ import re
 import time
 
 
-def create_normal_time(current_time,time_array):
+def create_normal_time(current_time, time_array):
     if len(current_time) == 2:
         current_time.append('00')
         updated_elements = ["0" + el if len(el) == 1 else el for el in current_time]
@@ -16,10 +16,15 @@ def create_normal_time(current_time,time_array):
         return None
 
 
-def clear_console_no_dates():
-    print("No available dates")
-    time.sleep(2)
-    os.system('cls')
+def clear_console_no_dates(status_code):
+    if status_code == 500:
+        print('NO INTERNET CONNECTION.....')
+        time.sleep(5)
+        os.system('cls')
+    else:
+        print("No available dates")
+        time.sleep(2)
+        os.system('cls')
 
 
 def validate_fullname(user_input):
