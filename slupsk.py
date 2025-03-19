@@ -3,6 +3,7 @@ import logging
 import os
 import time
 
+import requests
 from art import tprint
 
 from utils.available_dates import available_dates
@@ -19,6 +20,12 @@ while True:
         available_dates('https://kolejka.gdansk.uw.gov.pl/admin/API/date/8/198/pl'))
     if dates_for_wniosek and status_code == 200:
         print(dates_for_wniosek)
+        for i in range(len(dates_for_wniosek)):
+            available_times = \
+                requests.get(f'https://kolejka.gdansk.uw.gov.pl/admin/API/time/8/49/{dates_for_wniosek[i]}').json()[
+                    'TIMES']
+            print(f"{dates_for_wniosek[i]} : {available_times} ")
+        print('\n\n')
     else:
         clear_console_no_dates(status_code)
     logging.basicConfig(
