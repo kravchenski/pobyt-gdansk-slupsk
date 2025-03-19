@@ -1,3 +1,5 @@
+import logging
+
 import requests
 
 
@@ -16,7 +18,15 @@ async def available_dates(url):
         'sec-gpc': '1',
         'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36',
     }
-
-    response = requests.get(url, headers=headers)
-    dates = response.json()["DATES"]
-    return response.status_code,dates
+    try:
+        response = requests.get(url, headers=headers)
+        dates = response.json()["DATES"]
+        return response.status_code, dates
+    except requests.exceptions.ConnectionError as e:
+        logging.getLogger().info(
+            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: Error, Данные: {e.response}")
+        return 500, []
+    except requests.exceptions.JSONDecodeError as e:
+        logging.getLogger().info(
+            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: Error, Данные: {e.response}")
+        return 500, []
