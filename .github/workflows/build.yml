@@ -1,12 +1,9 @@
-name: Build and Release Python Executables
+name: Build and Publish Release
 
 on:
   push:
-    branches:
-      - master
-  release:
-    types:
-      - created
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -14,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -30,13 +27,12 @@ jobs:
           pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1" --add-data "utils:utils/" "slupsk.py"
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        uses: kuloud/Github-Release-Action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.1
-          release_name: "Release v1.0.1"
-          body: "Executable files for Gdańsk and Słupsk are collected and uploaded."
+          title: "Release ${{ github.ref_name }}"
+          body: "Executable files for Gdańsk and Słupsk are included in this release."
           draft: false
           prerelease: false
 
