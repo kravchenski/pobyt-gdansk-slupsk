@@ -24,9 +24,9 @@ async def available_dates(url):
         return response.status_code, dates
     except requests.exceptions.ConnectionError as e:
         logging.getLogger().info(
-            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: Error, Данные: {e.response}")
+            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: ConnectionError, Данные: {e.response}")
         return 500, []
     except requests.exceptions.JSONDecodeError as e:
         logging.getLogger().info(
-            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: Error, Данные: {e.response}")
+            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: JSONDecodeError, Данные: {e.response}")
         return 500, []
