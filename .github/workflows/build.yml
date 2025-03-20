@@ -29,8 +29,8 @@ jobs:
 
       - name: Build Executables
         run: |
-          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk_v1.0.1.exe" --add-data "utils;utils/" "gdansk.py"
-          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1.exe" --add-data "utils;utils/" "slupsk.py"
+          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "gdansk_v1.0.1_fix.exe" --add-data "utils;utils/" "gdansk.py"
+          pyinstaller --noconfirm --onefile --console --icon "ico.ico" --name "slupsk_v1.0.1_fix.exe" --add-data "utils;utils/" "slupsk.py"
 
       - name: Show built files (debug)
         run: dir dist
@@ -60,8 +60,8 @@ jobs:
         with:
           files: dist/*.exe
           tag_name: ${{ github.ref_name }}
-          name: "Release ${{ github.ref_name }}"
-          body: "Executable files for Gdańsk and Słupsk (version 1.0.1) are included in this release."
+          name: "Release ${{ github.ref_name }} v.1.0.1(fix)"
+          body: "Executable files for Gdańsk and Słupsk (fix version 1.0.1) are included in this release."
           draft: false
           prerelease: false
         env:
