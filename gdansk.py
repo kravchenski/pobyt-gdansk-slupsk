@@ -19,13 +19,31 @@ while True:
     status_code, dates_for_wniosek = asyncio.run(
         available_dates('https://kolejka.gdansk.uw.gov.pl/admin/API/date/5/304/pl'))
     if dates_for_wniosek and status_code == 200:
-        print(dates_for_wniosek)
+        dates_with_time = []
         for i in range(len(dates_for_wniosek)):
-            available_times = \
-                requests.get(f'https://kolejka.gdansk.uw.gov.pl/admin/API/time/5/3/{dates_for_wniosek[i]}').json()[
-                    'TIMES']
-            print(f"{dates_for_wniosek[i]} : {available_times} ")
+            normal_date = '-'.join(list(reversed(dates_for_wniosek[i].replace('/', '-').split('-'))))
+            try:
+                available_times = \
+                    requests.get(f'https://kolejka.gdansk.uw.gov.pl/admin/API/time/5/3/{normal_date}').json()[
+                        'TIMES']
+                element = f"'{dates_for_wniosek[i]}' : '{",".join([available_time['time'] for available_time in available_times])}'"
+                print(element)
+                dates_with_time.append(element)
+            except requests.exceptions.ConnectionError:
+                print('NO INTERNET CONNECTION.....')
+                logger.info(
+                    f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: {status_code}, Данные(время): ConnectionError")
+                break
+
+            except requests.exceptions.JSONDecodeError:
+                print('Error: JSONDecodeError')
+                logger.info(
+                    f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: {status_code}, Данные(время): JSONDecodeError")
+                break
         print('\n\n')
+        logger.info(
+            f"{logging.Formatter('%(asctime)s').format(logging.LogRecord(None, None, None, None, None, None, None))} | Статус: {status_code}, Данные(время): {dates_with_time}")
+
     else:
         clear_console_no_dates(status_code)
     logging.basicConfig(
