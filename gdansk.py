@@ -26,7 +26,7 @@ while True:
                 available_times = \
                     requests.get(f'https://kolejka.gdansk.uw.gov.pl/admin/API/time/5/3/{normal_date}').json()[
                         'TIMES']
-                element = f"'{dates_for_wniosek[i]}' : '{",".join([available_time['time'] for available_time in available_times])}'"
+                element = f"'{dates_for_wniosek[i]}' : '{','.join([available_time['time'] for available_time in available_times])}'"
                 print(element)
                 dates_with_time.append(element)
             except requests.exceptions.ConnectionError:
